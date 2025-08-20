@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-[400px] text-center">
+    <h1 class="text-xl font-semibold mb-4">Hello, {{ user['name'] }} 👋</h1>
+    <p class="text-gray-600 mb-6">You’re signed in with Google.</p>
+    <a href="{{ url_for('logout') }}" 
+       class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition">
+       Logout
+    </a>
+  </div>
+</body>
+</html>

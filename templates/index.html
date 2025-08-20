@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-background text-foreground">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revenant – Perpetuals Trading</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons (Tailwind-friendly) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Subtle fade-up animation */
+    @keyframes fade-up {
+      0% { opacity: 0; transform: translateY(14px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fade-up .7s ease-out forwards; }
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .3s; }
+    .delay-3 { animation-delay: .45s; }
+  </style>
+</head>
+<body class="font-sans bg-white text-neutral-900">
+
+  <!-- Hero Section -->
+  <header class="relative border-b border-neutral-200">
+    <!-- Background image with overlay -->
+    <div class="absolute inset-0 bg-[url('/static/hero-bg.jpg')] bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-black/50"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 py-20 text-center text-white">
+      <!-- Logo -->
+      <i data-lucide="infinity" class="w-14 h-14 mx-auto mb-4"></i>
+
+      <h1 class="text-5xl font-bold mb-4">Revenant</h1>
+      <p class="text-neutral-200 max-w-2xl mx-auto">
+        Trade crypto perpetual futures with leverage, powered by <span class="font-semibold">Hyperliquid</span>.
+      </p>
+      <div class="mt-8">
+        <a href="/login"
+           class="inline-flex items-center px-6 py-3 rounded-lg border border-neutral-900 bg-neutral-900 text-white shadow-sm hover:bg-neutral-700 transition">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5 mr-2">
+          Sign in with Google
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Features Section -->
+  <section class="max-w-6xl mx-auto px-6 py-20 grid gap-8 md:grid-cols-4 text-center">
+    <div class="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm animate-fade-up delay-3">
+      <i data-lucide="log-in" class="w-5 h-5 mx-auto mb-4 text-neutral-900"></i>
+      <h3 class="text-lg font-semibold mb-2">Easy Social Login</h3>
+      <p class="text-neutral-600">Sign in with Google — no external wallets required.</p>
+    </div>
+    <div class="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm animate-fade-up">
+      <i data-lucide="zap" class="w-5 h-5 mx-auto mb-4 text-neutral-900"></i>
+      <h3 class="text-lg font-semibold mb-2">Custom Strategies</h3>
+      <p class="text-neutral-600">Trade with custom strategies designed for performance.</p>
+    </div>
+    <div class="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm animate-fade-up delay-1">
+      <i data-lucide="shield-check" class="w-5 h-5 mx-auto mb-4 text-neutral-900"></i>
+      <h3 class="text-lg font-semibold mb-2">Gasless Experience</h3>
+      <p class="text-neutral-600">Circle wallets + Gas Station make deposits and withdrawals seamless.</p>
+    </div>
+    <div class="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm animate-fade-up delay-2">
+      <i data-lucide="wallet" class="w-5 h-5 mx-auto mb-4 text-neutral-900"></i>
+      <h3 class="text-lg font-semibold mb-2">USDC Collateral</h3>
+      <p class="text-neutral-600">All trades are collateralized with stable, reliable USDC.</p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="max-w-6xl mx-auto px-6 py-16 text-center">
+    <h2 class="text-2xl font-bold mb-4">Enter the world of unstoppable trading</h2>
+    <p class="text-neutral-600 mb-6">
+      Join Revenant today and trade perpetual futures with cutting-edge tools.
+    </p>
+    <a href="/login"
+       class="inline-flex items-center px-6 py-3 rounded-lg border border-neutral-900 bg-neutral-900 text-white shadow-sm hover:bg-neutral-700 transition">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5 mr-2">
+      Sign in with Google
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-neutral-200 bg-neutral-50 py-8">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-neutral-500">
+      <p>© 2025 Revenant. All rights reserved.</p>
+      <div class="flex gap-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-neutral-900">Docs</a>
+        <a href="#" class="hover:text-neutral-900">GitHub</a>
+        <a href="#" class="hover:text-neutral-900">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Render Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
