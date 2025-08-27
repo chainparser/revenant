@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page_title }} – Revenant</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/static/img/favicon.png" />
+
+  <!-- Tailwind + Lucide -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="flex flex-col min-h-screen font-sans bg-white text-neutral-900">
+
+  <!-- Header -->
+  <header class="border-b border-neutral-200 bg-white/80 backdrop-blur sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-16">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <i data-lucide="infinity" class="w-6 h-6 text-neutral-900"></i>
+      <span class="font-bold">Revenant</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex items-center gap-6 h-full">
+      <!-- Strategies -->
+      <a href="{{ url_for('strategies') }}"
+         class="flex items-center h-full border-b-2 text-sm {{ 'border-black font-bold text-black' if page_title == 'Strategies' else 'border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-400' }}">
+        Strategies
+      </a>
+
+      <!-- Wallet -->
+      <a href="{{ url_for('wallet') }}"
+         class="flex items-center h-full border-b-2 text-sm {{ 'border-black font-bold text-black' if page_title == 'Wallet' else 'border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-400' }}">
+        Wallet
+      </a>
+
+      <!-- Notices -->
+      <a href="{{ url_for('notices') }}"
+         class="flex items-center h-full border-b-2 {{ 'border-black' if page_title == 'Notices' else 'border-transparent hover:border-neutral-400' }}">
+        <i data-lucide="{{ 'bell-dot' if page_title == 'Notices' else 'bell' }}"
+           class="w-4 h-4 {{ 'fill-black stroke-black' if page_title == 'Notices' else 'text-neutral-600 hover:text-neutral-900' }}"></i>
+      </a>
+
+      <!-- Account -->
+      <a href="{{ url_for('account') }}"
+         class="flex items-center h-full border-b-2 {{ 'border-black' if page_title == 'Account' else 'border-transparent hover:border-neutral-400' }}">
+        {% if user and user.picture %}
+          <img src="{{ user.picture }}" alt="Account"
+               class="w-8 h-8 rounded-full object-cover {{ 'border-2 border-black' if page_title == 'Account' else 'border border-neutral-300' }}">
+        {% else %}
+          <i data-lucide="user"
+             class="w-8 h-8 rounded-full p-1 {{ 'border-2 border-black' if page_title == 'Account' else 'border border-neutral-300 text-neutral-600' }}"></i>
+        {% endif %}
+      </a>
+    </nav>
+  </div>
+</header>
+
+
+<!-- Hero -->
+<section class="bg-neutral-50 border-b border-neutral-200">
+  <div class="max-w-6xl mx-auto px-6 py-12 text-center">
+    {% block hero_icon %}{% endblock %}
+    <h1 class="text-3xl font-bold mb-2">{{ page_title }}</h1>
+    <p class="text-neutral-600 text-sm">{{ page_desc }}</p>
+    {% block hero_buttons %}{% endblock %}
+  </div>
+</section>
+
+  <!-- Page Content -->
+  <main class="flex-1 max-w-6xl mx-auto px-6 py-12">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer (sticky bottom) -->
+  <footer class="mt-auto border-t border-neutral-200 bg-neutral-50 py-8">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-neutral-500">
+      <p>© 2025 Revenant Strategies. All rights reserved.</p>
+      <div class="flex gap-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-neutral-900">Docs</a>
+        <a href="#" class="hover:text-neutral-900">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <script> lucide.createIcons(); </script>
+</body>
+</html>
