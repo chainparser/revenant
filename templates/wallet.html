@@ -5,12 +5,11 @@
 {% endblock %}
 
 {% block hero_buttons %}
-  <a href="/deposit" class="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-700 text-sm">Deposit</a>
-  <a href="/withdraw" class="inline-block mt-4 px-4 py-2 border border-neutral-900 rounded-lg hover:bg-neutral-100 text-sm">Withdraw</a>
+  <!-- <a href="/deposit" class="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-700 text-sm">Deposit</a> -->
 {% endblock %}
 
 {% block content %}
-  <!-- Responsive 3-column layout, Balance Breakdown column is narrower -->
+  <!-- Responsive 3-column layout -->
   <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1.4fr] gap-6">
 
     <!-- Column 1: Wallet Summary -->
@@ -43,12 +42,12 @@
       {% endif %}
     </div>
 
-    <!-- Column 2: Balance Breakdown (narrower) -->
-    <div class="p-6 bg-white md:border-l md:border-neutral-200 md:pl-6 flex flex-col items-center">
-      <h2 class="font-medium text-neutral-600 mb-4 text-center">Balance Breakdown</h2>
+    <!-- Column 2: Balance Breakdown -->
+    <div class="p-6 bg-white flex flex-col items-start text-left">
+      <h2 class="font-medium text-neutral-600 mb-4">Balance Breakdown</h2>
 
-      <!-- Donut with smooth animation -->
-      <div class="flex items-center justify-center">
+      <!-- Donut -->
+      <div class="flex items-center justify-start">
         <div class="relative w-32 h-32 rounded-full transition-[background] duration-700 ease-in-out"
              style="background: conic-gradient(#3b82f6 {{ donut.funding_pct }}%, #22c55e 0);">
           <div class="absolute inset-4 bg-white rounded-full flex items-center justify-center">
@@ -61,7 +60,7 @@
       </div>
 
       <!-- Key -->
-      <div class="mt-3 text-xs text-neutral-600 space-y-1 text-center">
+      <div class="mt-3 text-xs text-neutral-600 space-y-1">
         <p>
           <span class="inline-block w-3 h-3 bg-blue-500 rounded-sm mr-1"></span>
           Funding Balance ({{ funding_balance }})
@@ -71,24 +70,28 @@
           Hyperliquid Balance ({{ hyperliquid_balance }})
         </p>
       </div>
+
+      <!-- Withdraw button moved here -->
+      <button id="openWithdrawModal"
+              class="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-700 text-sm">
+        Withdraw
+      </button>
     </div>
 
-    <!-- Column 3: Transfer Form (Unified) -->
+    <!-- Column 3: Transfer Form -->
     <div class="p-6 bg-white md:border-l md:border-neutral-200 md:pl-6">
       <h2 class="font-medium text-neutral-600 mb-4">Transfer USDC</h2>
-      
       <form method="POST" action="/transfer" class="space-y-4" id="transferForm">
-        <!-- From / To with switch -->
+        <!-- unchanged transfer form -->
         <div class="flex items-center justify-between space-x-3">
           <div class="flex-1">
             <label class="block text-xs font-medium text-neutral-600 mb-1">From</label>
             <select id="fromSelect" name="from"
-                    class="w-full border rounded-lg px-3 py-2 text-sm bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-800">
+                    class="w-full border rounded-lg px-3 py-2 text-sm bg-neutral-50">
               <option value="Hyperliquid">Hyperliquid</option>
               <option value="Arbitrum Sepolia">Arbitrum Sepolia</option>
             </select>
           </div>
-          <!-- switch perfectly aligned -->
           <button type="button" id="switchBtn"
                   class="flex-shrink-0 self-center w-7 h-7 flex items-center justify-center rounded-full border bg-white hover:bg-neutral-100">
             <i data-lucide="repeat" class="w-4 h-4 text-neutral-700"></i>
@@ -96,65 +99,114 @@
           <div class="flex-1">
             <label class="block text-xs font-medium text-neutral-600 mb-1">To</label>
             <select id="toSelect" name="to"
-                    class="w-full border rounded-lg px-3 py-2 text-sm bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-800">
+                    class="w-full border rounded-lg px-3 py-2 text-sm bg-neutral-50">
               <option value="Arbitrum Sepolia">Arbitrum Sepolia</option>
               <option value="Hyperliquid">Hyperliquid</option>
             </select>
           </div>
         </div>
-
-        <!-- Amount input -->
         <div>
           <label class="block text-xs font-medium text-neutral-600 mb-1">Amount</label>
           <div class="relative">
             <input type="number" step="0.01" min="0" id="amountInput" name="amount"
                    placeholder="Enter amount in USDC"
-                   class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-800 pr-12">
+                   class="w-full border rounded-lg px-3 py-2 text-sm pr-12">
             <button type="button" id="maxBtn"
                     class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-blue-600 hover:underline">
               Max <span id="maxValue">{{ funding_balance }}</span>
             </button>
           </div>
         </div>
-
-        <!-- Transfer button -->
         <button type="button" id="transferBtn"
-                class="w-full bg-neutral-900 text-white py-2 rounded-lg hover:bg-neutral-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                class="w-full bg-neutral-900 text-white py-2 rounded-lg hover:bg-neutral-700 text-sm disabled:opacity-50">
           Transfer
         </button>
       </form>
-
-      <!-- Rules text -->
       <p id="rulesText" class="text-xs mt-3 text-neutral-500">
         You must move funds into Hyperliquid to start our custom strategies.
       </p>
     </div>
   </div>
 
-  <!-- Modal -->
-  <div id="confirmModal"
-       class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-      <h3 class="text-lg font-semibold text-neutral-800 mb-2">Confirm Transfer</h3>
-      <p class="text-sm text-neutral-600 mb-4">
-        Are you sure you want to proceed with this transfer?
-      </p>
-      <div class="flex justify-end space-x-3">
-        <button id="cancelModal"
-                class="px-4 py-2 border rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">
-          No
-        </button>
-        <button id="confirmModalYes"
-                class="px-4 py-2 bg-neutral-900 text-white rounded-lg text-sm hover:bg-neutral-700">
-          Yes
-        </button>
+  <!-- Withdraw Modal -->
+  <div id="withdrawModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
+      <button id="closeWithdrawModal" class="absolute top-3 right-3 text-neutral-500 hover:text-neutral-800">
+        ✕
+      </button>
+      <div id="withdrawStep1">
+        <h3 class="text-lg font-semibold mb-4">Choose Withdrawal Option</h3>
+        <div class="space-y-3">
+          <div id="onchainCard" class="p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition">
+            Onchain Withdrawal
+          </div>
+          <div class="p-4 border rounded-lg text-neutral-400 cursor-not-allowed bg-neutral-50">
+            Fiat Offramp (Coming soon)
+          </div>
+        </div>
+      </div>
+      <div id="withdrawStep2" class="hidden">
+        <h3 class="text-lg font-semibold mb-4">Onchain Withdrawal</h3>
+        <form id="withdrawForm" class="space-y-4">
+          <div>
+            <label class="block text-xs mb-1">Wallet Address</label>
+            <input type="text" id="walletAddress" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <p id="addressError" class="text-xs text-red-500 hidden">Invalid Ethereum address</p>
+          </div>
+          <div>
+            <label class="block text-xs mb-1">Network</label>
+            <input type="text" value="Arbitrum Sepolia" disabled class="w-full border rounded-lg px-3 py-2 text-sm bg-neutral-50">
+          </div>
+          <div>
+            <label class="block text-xs mb-1">Amount</label>
+            <div class="relative">
+              <input type="number" step="0.01" min="0" id="withdrawAmount"
+                     class="w-full border rounded-lg px-3 py-2 text-sm pr-12">
+              <button type="button" id="withdrawMax"
+                      class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-blue-600 hover:underline">
+                Max {{ funding_balance }}
+              </button>
+            </div>
+          </div>
+          <button type="button" id="proceedWithdraw"
+                  class="w-full bg-neutral-900 text-white py-2 rounded-lg hover:bg-neutral-700 text-sm">
+            Withdraw
+          </button>
+        </form>
+      </div>
+      <div id="withdrawStep3" class="hidden">
+        <h3 class="text-lg font-semibold mb-4">Confirm Withdrawal</h3>
+        <p class="text-sm text-neutral-600 mb-4">Confirm sending <span id="confirmAmount"></span> USDC to <span id="confirmAddress"></span> on Arbitrum Sepolia.</p>
+        <div class="flex justify-end space-x-3">
+          <button id="backWithdraw" class="px-4 py-2 border rounded-lg text-sm">Back</button>
+          <button id="confirmWithdraw" class="px-4 py-2 bg-neutral-900 text-white rounded-lg text-sm hover:bg-neutral-700">Confirm</button>
+        </div>
+      </div>
+      <div id="withdrawStep4" class="hidden text-center">
+        <div class="animate-spin mx-auto mb-4 w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        <h3 class="text-lg font-semibold mb-2">Withdrawal in Process</h3>
+        <a href="https://sepolia.arbiscan.io" target="_blank" class="text-blue-600 underline text-sm">View on Arbiscan</a>
       </div>
     </div>
   </div>
 
-    <!-- JS Logic -->
+  <!-- Transfer Confirmation Modal (unchanged) -->
+  <div id="confirmModal"
+       class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+      <h3 class="text-lg font-semibold mb-2">Confirm Transfer</h3>
+      <p class="text-sm mb-4">Are you sure you want to proceed with this transfer?</p>
+      <div class="flex justify-end space-x-3">
+        <button id="cancelModal" class="px-4 py-2 border rounded-lg text-sm">No</button>
+        <button id="confirmModalYes" class="px-4 py-2 bg-neutral-900 text-white rounded-lg text-sm">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Logic -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // --- Transfer logic (unchanged) ---
       const fromSelect = document.getElementById("fromSelect");
       const toSelect = document.getElementById("toSelect");
       const switchBtn = document.getElementById("switchBtn");
@@ -163,14 +215,11 @@
       const maxValueSpan = document.getElementById("maxValue");
       const transferBtn = document.getElementById("transferBtn");
       const rulesText = document.getElementById("rulesText");
-
-      // Modal elements
       const confirmModal = document.getElementById("confirmModal");
       const cancelModal = document.getElementById("cancelModal");
       const confirmModalYes = document.getElementById("confirmModalYes");
       const form = document.getElementById("transferForm");
 
-      // balances passed from Flask
       const balances = {
         "Hyperliquid": {{ hyperliquid_balance | default(0) }},
         "Arbitrum Sepolia": {{ funding_balance | default(0) }}
@@ -185,7 +234,6 @@
         }
         toggleTransfer(maxValue);
       }
-
       function toggleTransfer(maxValue) {
         if (maxValue < 5) {
           transferBtn.disabled = true;
@@ -197,62 +245,197 @@
           rulesText.classList.remove("text-red-500");
         }
       }
-
       function preventSameSelection() {
         if (fromSelect.value === toSelect.value) {
           toSelect.value = fromSelect.value === "Hyperliquid" ? "Arbitrum Sepolia" : "Hyperliquid";
         }
         updateMax();
       }
-
       switchBtn.addEventListener("click", () => {
         const temp = fromSelect.value;
         fromSelect.value = toSelect.value;
         toSelect.value = temp;
         updateMax();
       });
-
       maxBtn.addEventListener("click", () => {
         amountInput.value = maxValueSpan.textContent;
       });
-
       fromSelect.addEventListener("change", preventSameSelection);
       toSelect.addEventListener("change", preventSameSelection);
-
       amountInput.addEventListener("input", () => {
         const maxValue = parseFloat(maxValueSpan.textContent);
         if (parseFloat(amountInput.value) > maxValue) {
           amountInput.value = maxValue.toFixed(2);
         }
       });
-
-      // Modal open
       transferBtn.addEventListener("click", () => {
         confirmModal.classList.remove("hidden");
         confirmModal.classList.add("flex");
       });
-
-      // Modal cancel
       cancelModal.addEventListener("click", () => {
         confirmModal.classList.add("hidden");
         confirmModal.classList.remove("flex");
       });
-
-      // Modal confirm -> submit form
       confirmModalYes.addEventListener("click", () => {
         form.submit();
       });
-
       updateMax();
+
+      // --- Withdraw logic ---
+      const openWithdrawModal = document.getElementById("openWithdrawModal");
+      const withdrawModal = document.getElementById("withdrawModal");
+      const closeWithdrawModal = document.getElementById("closeWithdrawModal");
+      const onchainCard = document.getElementById("onchainCard");
+      const withdrawStep1 = document.getElementById("withdrawStep1");
+      const withdrawStep2 = document.getElementById("withdrawStep2");
+      const withdrawStep3 = document.getElementById("withdrawStep3");
+      const withdrawStep4 = document.getElementById("withdrawStep4");
+      const walletAddress = document.getElementById("walletAddress");
+      const addressError = document.getElementById("addressError");
+      const withdrawAmount = document.getElementById("withdrawAmount");
+      const withdrawMax = document.getElementById("withdrawMax");
+      const proceedWithdraw = document.getElementById("proceedWithdraw");
+      const backWithdraw = document.getElementById("backWithdraw");
+      const confirmWithdraw = document.getElementById("confirmWithdraw");
+      const confirmAmount = document.getElementById("confirmAmount");
+      const confirmAddress = document.getElementById("confirmAddress");
+
+      const fundingBalance = {{ funding_balance | default(0) }};
+
+      openWithdrawModal.addEventListener("click", () => {
+        withdrawModal.classList.remove("hidden");
+        withdrawModal.classList.add("flex");
+        withdrawStep1.classList.remove("hidden");
+        withdrawStep2.classList.add("hidden");
+        withdrawStep3.classList.add("hidden");
+        withdrawStep4.classList.add("hidden");
+      });
+
+      closeWithdrawModal.addEventListener("click", () => {
+        withdrawModal.classList.add("hidden");
+        withdrawModal.classList.remove("flex");
+        if (withdrawalCompleted) {
+          window.location.reload();
+        }
+      });
+
+      onchainCard.addEventListener("click", () => {
+        withdrawStep1.classList.add("hidden");
+        withdrawStep2.classList.remove("hidden");
+      });
+
+      withdrawMax.addEventListener("click", () => {
+        withdrawAmount.value = fundingBalance.toFixed(2);
+      });
+
+      proceedWithdraw.addEventListener("click", () => {
+        const addr = walletAddress.value.trim();
+        const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+        if (!ethRegex.test(addr)) {
+          addressError.classList.remove("hidden");
+          return;
+        } else {
+          addressError.classList.add("hidden");
+        }
+        let amt = parseFloat(withdrawAmount.value);
+        if (isNaN(amt) || amt <= 0) return;
+        if (amt > fundingBalance) amt = fundingBalance;
+        withdrawAmount.value = amt.toFixed(2);
+
+        confirmAmount.textContent = amt.toFixed(2);
+        confirmAddress.textContent = addr;
+
+        withdrawStep2.classList.add("hidden");
+        withdrawStep3.classList.remove("hidden");
+      });
+
+      backWithdraw.addEventListener("click", () => {
+        withdrawStep3.classList.add("hidden");
+        withdrawStep2.classList.remove("hidden");
+      });
+
+      let withdrawalCompleted = false; // track if tx was successful/failed
+
+      confirmWithdraw.addEventListener("click", () => {
+        withdrawStep3.classList.add("hidden");
+        withdrawStep4.classList.remove("hidden");
+
+        withdrawStep4.innerHTML = `
+          <div class="animate-spin mx-auto mb-4 w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+          <h3 class="text-lg font-semibold mb-2">Processing Withdrawal...</h3>
+        `;
+
+        const addr = confirmAddress.textContent;
+        const amt = confirmAmount.textContent;
+
+        fetch("/withdraw", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address: addr, amount: amt })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            withdrawStep4.innerHTML = `
+              <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-red-100">
+                <svg class="w-8 h-8 text-red-600 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-red-600 mb-2">Withdrawal Failed</h3>
+              <p class="text-sm">${data.error}</p>
+            `;
+            withdrawalCompleted = true;
+            return;
+          }
+
+          const state = (data.state || "").toUpperCase();
+          const success = state === "CONFIRMED" || state === "SENT";
+
+          const txHash = data.tx_hash;
+
+          if (success) {
+            withdrawStep4.innerHTML = `
+              <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-green-100">
+                <svg class="w-8 h-8 text-green-600 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-green-600 mb-2">Withdrawal Successful</h3>
+              <a href="https://sepolia.arbiscan.io/tx/${txHash}" target="_blank"
+                class="text-blue-600 underline text-sm">View on Arbiscan</a>
+            `;
+          } else {
+            withdrawStep4.innerHTML = `
+              <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-red-100">
+                <svg class="w-8 h-8 text-red-600 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-red-600 mb-2">Withdrawal Failed</h3>
+              <p class="text-sm">Transaction status: ${state || "Unknown"}</p>
+              ${txHash ? `<a href="https://sepolia.arbiscan.io/tx/${txHash}" target="_blank" class="text-blue-600 underline text-sm">View on Arbiscan</a>` : ""}
+            `;
+          }
+
+          withdrawalCompleted = true;
+        })
+        .catch(err => {
+          withdrawStep4.innerHTML = `
+            <h3 class="text-lg font-semibold mb-2 text-red-600">Error</h3>
+            <p class="text-sm">${err}</p>
+          `;
+          withdrawalCompleted = true;
+        });
+      });
+
     });
 
-    // Copy address with tooltip animation
     function copyAddress(addr, el) {
       navigator.clipboard.writeText(addr).then(() => {
         const tooltip = el.querySelector(".tooltip");
         tooltip.classList.remove("opacity-0");
         tooltip.classList.add("opacity-100");
-
         setTimeout(() => {
           tooltip.classList.remove("opacity-100");
           tooltip.classList.add("opacity-0");
@@ -260,5 +443,4 @@
       });
     }
   </script>
-
 {% endblock %}

@@ -1,5 +1,6 @@
 import os
-import uuid
+import uuid 
+import json 
 from google.cloud import datastore
 from circle.web3 import utils as circle_utils
 from circle.web3 import developer_controlled_wallets 
@@ -128,3 +129,36 @@ def get_recent_transactions(wallet_id: str):
                 "transaction_type": tx.transaction_type
             })
     return txs
+
+# --- Withdrawals ---
+def create_withdrawal(wallet_id: str, destination: str, amount: float, token_id: str):
+    """
+    Initiates a Circle developer-controlled transfer (gasless).
+    Returns a Python dict of the response.
+    """
+    req = developer_controlled_wallets.CreateTransferTransactionForDeveloperRequest.from_dict({
+        "amounts": [str(amount)],
+        "destinationAddress": destination,
+        "feeLevel": "HIGH",
+        "tokenId": token_id,
+        "walletId": wallet_id,
+    })
+    resp = transactions_api.create_developer_transaction_transfer(
+        create_transfer_transaction_for_developer_request=req
+    )
+
+    # Circle SDK objects can be model instances → convert safely
+    try:
+        return resp.to_dict()  # ✅ preferred if available
+    except AttributeError:
+        return json.loads(resp.json())  # fallback
+
+
+def get_transaction_status(tx_id: str):
+    resp = transactions_api.get_transaction(id=tx_id)
+    try:
+        return resp.to_dict()
+    except AttributeError:
+        import json
+        return json.loads(resp.json())
+

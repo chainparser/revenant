@@ -1,12 +1,13 @@
-from flask import Flask, redirect, url_for, session, render_template
+from flask import Flask, redirect, url_for, session, render_template, request, jsonify
 from authlib.integrations.flask_client import OAuth
 from google.cloud import datastore 
 from datetime import datetime, timezone 
 from functools import wraps 
-import os
+import os 
+import time, json  
 
 from datastore_session import DatastoreSessionInterface 
-from wallet_service import create_user_wallets, get_wallet_balances, get_recent_transactions 
+from wallet_service import create_user_wallets, get_wallet_balances, get_recent_transactions, create_withdrawal, get_transaction_status
 from utils import generate_qr_code, format_usd 
 
 
@@ -216,6 +217,57 @@ def wallet():
         hyperliquid_balance=hyperliquid_balance,
         donut=donut,
     )
+
+
+@app.route("/withdraw", methods=["POST"])
+@login_required
+def withdraw():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing data"}), 400
+
+    address = data.get("address")
+    amount = data.get("amount")
+    if not address or not amount:
+        return jsonify({"error": "Missing address or amount"}), 400
+
+    # Lookup user wallet
+    key = datastore_client.key("user", session["user_id"])
+    user = datastore_client.get(key)
+    wallet_info = user["wallets"].get("ARB-SEPOLIA")
+    wallet_id = wallet_info["wallet_id"]
+
+    token_id = os.getenv("USDC_TOKEN_ID")  # must be set in env
+
+    try:
+        # Step 1: initiate withdrawal
+        resp = create_withdrawal(wallet_id, address, float(amount), token_id)
+        tx_id = resp["data"]["id"]
+
+        # Step 2: poll Circle until CONFIRMED or FAILED
+        tx = None
+        max_attempts = 12  # 12 × 5s = 60s max wait 
+
+        for attempt in range(max_attempts):
+            time.sleep(5)
+            status_resp = get_transaction_status(tx_id)
+
+            tx = status_resp.get("data", {}).get("transaction", {})
+            state = (tx.get("state") or "").upper()
+
+            if state in ("CONFIRMED", "FAILED", "CANCELLED"):
+                break
+
+        return jsonify({
+            "id": tx.get("id", tx_id),
+            "state": tx.get("state", "PENDING"),
+            "tx_hash": tx.get("txHash") or tx.get("tx_hash")
+        })
+
+    except Exception as e:
+        app.logger.exception("Withdrawal failed")
+        return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/account")
