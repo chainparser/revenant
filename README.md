@@ -22,18 +22,33 @@ Revenant is an algorithmic trading platform that leverages [Circle’s Developer
 
 ```mermaid
 flowchart TD
-    browser["Browser (Frontend)"] --> flask["Flask App (main.py)"]
+    subgraph User["User"]
+        browser["Browser Frontend"]
+    end
 
-    flask --> sessions["Datastore Sessions"]
+    subgraph AppEngine["Google App Engine"]
+        flask["Flask App main.py"]
+        sessions["Datastore Sessions"]
+    end
 
-    flask --> wallets["Circle Wallets"]
-    flask --> transfers["Circle Transactions API"]
-    flask --> gas["Circle Gas Station (Sponsored TXs)"]
+    subgraph Circle["Circle APIs"]
+        wallets["Developer-Controlled Wallets"]
+        gas["Gas Station - Sponsored TXs"]
+        transfers["Transactions API"]
+    end
 
-    gas --> transfers
+    subgraph Infra["Hyperliquid (Upcoming)"]
+        hlbridge["Hyperliquid Bridge - Arbitrum Mainnet"]
+    end
+
+    browser -->|Google OAuth| flask
+    flask -->|Store sessions| sessions
+    flask -->|Provision wallet| wallets
+    flask -->|Balances, TX history| transfers
+    flask -->|Withdrawals & Transfers| gas
+    gas -->|Executes w/o gas fees| transfers
     transfers --> wallets
-
-    flask --> hlbridge["Hyperliquid Bridge - Arbitrum Mainnet (Upcoming)"]
+    flask -->|Bridge transfer future| hlbridge
 ```
 
 ------------------------------------------------------------------------
