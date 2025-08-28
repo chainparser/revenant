@@ -71,7 +71,7 @@ Revenant integrates **[Circle’s Developer-Controlled Wallets](https://develope
 
 - **Gas Station (Sponsored Transactions)**  
   - Users **never need ETH for gas**. Circle covers transaction fees behind the scenes.  
-  - This means deposits, withdrawals, and transfers are entirely seamless — no more worrying about topping up gas.  
+  - This means deposits, withdrawals, and transfers are entirely seamless, no more worrying about topping up gas.  
 
 - **Withdrawals**  
   - When you withdraw USDC to an external wallet, the transaction is executed via Circle’s APIs.  
