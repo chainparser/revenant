@@ -3,4 +3,5 @@ requests
 google-cloud-datastore==2.15.1
 authlib 
 dotenv
+qrcode[pil] 
 circle-developer-controlled-wallets
