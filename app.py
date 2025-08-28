@@ -285,8 +285,8 @@ def notices():
 @app.route("/strategies")
 @login_required
 def strategies():
-    """AI-driven trading strategies page."""
-    return render_template("strategies.html", page_title="Strategies", page_desc="AI-driven trading strategies")
+    """Custom trading strategies page."""
+    return render_template("strategies.html", page_title="Strategies", page_desc="Custom trading strategies")
 
 
 # --- Run App ---

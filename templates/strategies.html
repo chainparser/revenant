@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block hero_icon %}
+  <i data-lucide="bot" class="w-6 h-6 mx-auto mb-4 text-neutral-900"></i>
+{% endblock %}
+
+{% block content %}
+  <!-- Strategies Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <!-- Strategy 1 -->
+    <a href="#" class="p-6 bg-white rounded-2xl shadow-sm border border-neutral-200 hover:shadow-md transition block">
+      <h2 class="text-lg font-semibold mb-2">Strategy 1</h2>
+      <p class="text-sm text-neutral-600 mb-4">Momentum-based trading strategy focusing on short-term price trends.</p>
+      <div class="space-y-2 text-sm text-neutral-700">
+        <p><span class="font-medium">Active Users:</span> 120</p>
+        <p><span class="font-medium">Total Profits:</span> $45,230</p>
+        <p><span class="font-medium">Running Time:</span> 180 days</p>
+      </div>
+    </a>
+
+    <!-- Strategy 2 -->
+    <a href="#" class="p-6 bg-white rounded-2xl shadow-sm border border-neutral-200 hover:shadow-md transition block">
+      <h2 class="text-lg font-semibold mb-2">Strategy 2</h2>
+      <p class="text-sm text-neutral-600 mb-4">Mean-reversion strategy targeting price pullbacks to key levels.</p>
+      <div class="space-y-2 text-sm text-neutral-700">
+        <p><span class="font-medium">Active Users:</span> 85</p>
+        <p><span class="font-medium">Total Profits:</span> $32,110</p>
+        <p><span class="font-medium">Running Time:</span> 95 days</p>
+      </div>
+    </a>
+
+    <!-- Strategy 3 -->
+    <a href="#" class="p-6 bg-white rounded-2xl shadow-sm border border-neutral-200 hover:shadow-md transition block">
+      <h2 class="text-lg font-semibold mb-2">Strategy 3</h2>
+      <p class="text-sm text-neutral-600 mb-4">AI-driven arbitrage strategy exploiting cross-exchange inefficiencies.</p>
+      <div class="space-y-2 text-sm text-neutral-700">
+        <p><span class="font-medium">Active Users:</span> 65</p>
+        <p><span class="font-medium">Total Profits:</span> $78,540</p>
+        <p><span class="font-medium">Running Time:</span> 210 days</p>
+      </div>
+    </a>
+
+    <!-- Strategy 4 -->
+    <a href="#" class="p-6 bg-white rounded-2xl shadow-sm border border-neutral-200 hover:shadow-md transition block">
+      <h2 class="text-lg font-semibold mb-2">Strategy 4</h2>
+      <p class="text-sm text-neutral-600 mb-4">Long-term trend-following strategy using moving averages and AI filters.</p>
+      <div class="space-y-2 text-sm text-neutral-700">
+        <p><span class="font-medium">Active Users:</span> 150</p>
+        <p><span class="font-medium">Total Profits:</span> $120,300</p>
+        <p><span class="font-medium">Running Time:</span> 365 days</p>
+      </div>
+    </a>
+
+  </div>
+{% endblock %}
