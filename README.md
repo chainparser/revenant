@@ -7,14 +7,14 @@ Revenant is an algorithmic trading platform that leverages [Circle’s Developer
 ## Features
 
 -   **Google OAuth Login** with database and session persistence in Google Cloud
-    Datastore\
+    Datastore
 -   **Circle Wallet Integration** (developer-controlled wallets on
-    Arbitrum Sepolia testnet)\
--   **Deposits & Withdrawals** in USDC (with QR code support)\
+    Arbitrum Sepolia testnet)
+-   **Deposits & Withdrawals** in USDC (with QR code support)
 -   **Wallet Dashboard** with funding vs. Hyperliquid balance
-    breakdown\
--   **Strategies Page** with custom trading strategy cards\
--   **System Notices & Alerts**\
+    breakdown
+-   **Strategies Page** with custom trading strategy cards
+-   **System Notices & Alerts**
 
 ------------------------------------------------------------------------
 
@@ -23,22 +23,22 @@ Revenant is an algorithmic trading platform that leverages [Circle’s Developer
 ```mermaid
 flowchart TD
     subgraph User["User"]
-        browser["Browser (Frontend)"]
+        browser["Browser Frontend"]
     end
 
     subgraph AppEngine["Google App Engine"]
-        flask["Flask App (main.py)"]
+        flask["Flask App main.py"]
         sessions["Datastore Sessions"]
     end
 
     subgraph Circle["Circle APIs"]
         wallets["Developer-Controlled Wallets"]
-        gas["Gas Station (Sponsored TXs)"]
+        gas["Gas Station - Sponsored TXs"]
         transfers["Transactions API"]
     end
 
     subgraph Infra["Hyperliquid (Upcoming)"]
-        hlbridge["Hyperliquid Bridge (Arbitrum Mainnet)"]
+        hlbridge["Hyperliquid Bridge - Arbitrum Mainnet"]
     end
 
     browser -->|Google OAuth| flask
@@ -48,7 +48,7 @@ flowchart TD
     flask -->|Withdrawals & Transfers| gas
     gas -->|Executes w/o gas fees| transfers
     transfers --> wallets
-    flask -->|Bridge transfer (future)| hlbridge
+    flask -->|Bridge transfer future| hlbridge
 ```
 
 ------------------------------------------------------------------------
@@ -104,19 +104,19 @@ Revenant integrates **[Circle’s Developer-Controlled Wallets](https://develope
 
 ## Tech Stack
 
--   **Backend**: Flask (Python)\
--   **Auth**: Google OAuth via Authlib\
--   **Database**: Google Cloud Datastore\
--   **Wallets & Transactions**: Circle Developer-Controlled Wallets API\
+-   **Backend**: Flask (Python)
+-   **Auth**: Google OAuth via Authlib
+-   **Database**: Google Cloud Datastore
+-   **Wallets & Transactions**: Circle Developer-Controlled Wallets API
 -   **Frontend**: Jinja2 + TailwindCSS + Lucide icons
 
 ------------------------------------------------------------------------
 
 ## Roadmap
 
--   [ ] Fiat offramp integration\
--   [ ] Real custom trading strategies\
--   [ ] Admin dashboard for system monitoring\
+-   [ ] Fiat offramp integration
+-   [ ] Real custom trading strategies
+-   [ ] Admin dashboard for system monitoring
 -   [ ] Expand to Arbitrum Mainnet and other L2s
 
 ------------------------------------------------------------------------
