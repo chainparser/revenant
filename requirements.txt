@@ -1,2 +1,6 @@
 Flask
 gunicorn
+hyperliquid-python-sdk
+eth-account
+protobuf
+APScheduler
