@@ -1,6 +1,5 @@
 import os
 import eth_account
-from decimal import Decimal, ROUND_DOWN, ROUND_UP
 
 from hyperliquid.info import Info
 from hyperliquid.exchange import Exchange
